@@ -1,0 +1,80 @@
+<div id="ai_printmon_settings">
+  <h3>AI Print Monitor — Settings</h3>
+
+  <ul class="nav nav-tabs">
+    <li data-bind="css: {active: activeTab()=='connection'}"><a href="#" data-bind="click: function(){ activeTab('connection') }">LLM Connection</a></li>
+    <li data-bind="css: {active: activeTab()=='monitoring'}"><a href="#" data-bind="click: function(){ activeTab('monitoring') }">Monitoring</a></li>
+    <li data-bind="css: {active: activeTab()=='failure'}"><a href="#" data-bind="click: function(){ activeTab('failure') }">Failure Response</a></li>
+    <li data-bind="css: {active: activeTab()=='prompt'}"><a href="#" data-bind="click: function(){ activeTab('prompt') }">System Prompt</a></li>
+  </ul>
+
+  <div class="tab-content" style="margin-top:10px">
+    <div class="tab-pane" data-bind="visible: activeTab()=='connection'">
+      <div class="form-group">
+        <label>Provider Preset</label>
+        <select class="form-control" data-bind="value: provider_preset, options: providerPresets"></select>
+      </div>
+      <div class="form-group">
+        <label>API Endpoint</label>
+        <input type="text" class="form-control" data-bind="value: api_endpoint" />
+      </div>
+      <div class="form-group">
+        <label>API Key</label>
+        <input type="password" class="form-control" data-bind="value: api_key" />
+      </div>
+      <div class="form-group">
+        <label>Model</label>
+        <input type="text" class="form-control" data-bind="value: model_name" placeholder="e.g. gpt-4o, llava:latest" />
+      </div>
+      <button type="button" class="btn btn-default" data-bind="click: testConnection">Test Connection</button>
+      <span data-bind="visible: testing"> Testing... </span>
+    </div>
+
+    <div class="tab-pane" data-bind="visible: activeTab()=='monitoring'">
+      <div class="checkbox">
+        <label><input type="checkbox" data-bind="checked: monitor_enabled" /> Enable monitoring</label>
+      </div>
+      <div class="form-group">
+        <label>Snapshot URL</label>
+        <input type="text" class="form-control" data-bind="value: snapshot_url" />
+      </div>
+      <div class="form-group">
+        <label>Check interval (minutes)</label>
+        <input type="number" class="form-control" data-bind="value: interval_minutes" min="1" max="30" />
+      </div>
+      <div class="form-group">
+        <label>Voting rounds</label>
+        <select class="form-control" data-bind="value: rounds, options: [1,2,3]"></select>
+      </div>
+      <div class="form-group">
+        <label>Delay between rounds (seconds)</label>
+        <input type="number" class="form-control" data-bind="value: round_delay" min="1" max="10" />
+      </div>
+      <div class="form-group">
+        <label>Cooldown after alert (minutes)</label>
+        <input type="number" class="form-control" data-bind="value: cooldown_minutes" min="1" max="60" />
+      </div>
+    </div>
+
+    <div class="tab-pane" data-bind="visible: activeTab()=='failure'">
+      <p>Configure the voting thresholds and actions. For now you can edit the JSON rule blob directly.</p>
+      <div class="form-group">
+        <label>Failure rules (JSON)</label>
+        <textarea class="form-control" rows="6" data-bind="value: failure_rules_json"></textarea>
+      </div>
+    </div>
+
+    <div class="tab-pane" data-bind="visible: activeTab()=='prompt'">
+      <div class="form-group">
+        <label>System Prompt</label>
+        <textarea class="form-control" rows="8" data-bind="value: system_prompt"></textarea>
+      </div>
+      <button type="button" class="btn btn-default" data-bind="click: resetSystemPrompt">Reset to default</button>
+    </div>
+    <div style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 10px;">
+      <button type="button" class="btn btn-primary" data-bind="click: applySettings, disable: applying">Apply Settings Now</button>
+      <span data-bind="visible: applying"> Applying... </span>
+      <small class="text-muted" style="display:block; margin-top:5px">This validates and applies current settings to the running plugin without closing the dialog.</small>
+    </div>
+  </div>
+</div>
